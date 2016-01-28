@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.util.Map;
 
 import com.tests.utils.ProjectFactory;
 
@@ -37,43 +38,45 @@ public class CreateAllProjects {
 			Robot robot = new Robot();
 			ProjectFactory newProjectFactory = new ProjectFactory(robot, CURRENT_EDITION);
 			for (int backendsIndex = 0; backendsIndex < newProjectFactory.backends.length; backendsIndex++) {
+				Map<Byte, Object> properties = ProjectFactory.defaultProperties.get(newProjectFactory.backends[backendsIndex]);
 				for (int frontendsIndex = 0; frontendsIndex < ProjectFactory.frontends.length; frontendsIndex++) {
 					if (newProjectFactory.backends[backendsIndex] == ProjectFactory.STORED_PROCEDURES) {
 						for (int jdbcsIndex = 0; jdbcsIndex < newProjectFactory.jdbcs.length; jdbcsIndex++) {
 							if (newProjectFactory.jdbcs[jdbcsIndex] != ProjectFactory.H2) {
+								properties.put(ProjectFactory.JDBC_TYPE, newProjectFactory.jdbcs[jdbcsIndex]);
 								if (ProjectFactory.frontends[frontendsIndex] == ProjectFactory.INTEGRATION) {
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY);
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY);
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY);
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY);
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY, properties);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY, properties);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY, properties);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY, properties);
 								} else {
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.NONE, true, ProjectFactory.EMILY);
-									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.NONE, false, ProjectFactory.EMILY);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, true, ProjectFactory.EMILY,properties);
+									newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex],  ProjectFactory.NONE, false, ProjectFactory.EMILY, properties);
 								}
 							}
 						}
 					} else if (newProjectFactory.backends[backendsIndex] == ProjectFactory.JDBC) {
 						for (int jdbcsIndex = 0; jdbcsIndex < newProjectFactory.jdbcs.length; jdbcsIndex++) {
+							properties.put(ProjectFactory.JDBC_TYPE, newProjectFactory.jdbcs[jdbcsIndex]);
 							if (ProjectFactory.frontends[frontendsIndex] == ProjectFactory.INTEGRATION) {
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY);
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY);
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY);
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY, properties);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY, properties);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY, properties);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY, properties);
 							} else {
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.NONE, true, ProjectFactory.EMILY);
-								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], newProjectFactory.jdbcs[jdbcsIndex], ProjectFactory.NONE, false, ProjectFactory.EMILY);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, true, ProjectFactory.EMILY, properties);
+								newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, false, ProjectFactory.EMILY, properties);
 							}
 						}
 					} else {
 						if (ProjectFactory.frontends[frontendsIndex] == ProjectFactory.INTEGRATION) {
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY);
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY);
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY);
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, true, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.WEB_SERVICE, false, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, true, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.RESTFUL_SERVICE, false, ProjectFactory.EMILY);
 						} else {
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.NONE, true, ProjectFactory.EMILY);
-							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, ProjectFactory.NONE, false, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, true, ProjectFactory.EMILY);
+							newProjectFactory.createNewProject(newProjectFactory.backends[backendsIndex], ProjectFactory.frontends[frontendsIndex], ProjectFactory.NONE, false, ProjectFactory.EMILY);
 						}
 					}
 				}
